@@ -1,0 +1,17 @@
+.PropEditor {
+  width: 300px;
+}
+
+.props > div {
+  display: flex;
+}
+
+.props > div > * {
+  flex: 1;
+}
+
+code {
+  margin-top: 2em;
+  display: block;
+  word-wrap: break-word;
+}

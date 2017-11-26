@@ -1,0 +1,23 @@
+{
+  "name": "css-builder",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "commonmark": "^0.28.1",
+    "commonmark-react-renderer": "^4.3.4",
+    "jss": "^9.3.3",
+    "jss-global": "^3.0.0",
+    "jss-preset-default": "^4.0.1",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.17"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

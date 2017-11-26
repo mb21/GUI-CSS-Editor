@@ -1,0 +1,24 @@
+.App {
+  display: flex;
+  height: 100vh;
+}
+
+.App > * {
+  margin: 20px;
+}
+
+textarea {
+  font-size: 18px;
+  flex: 1;
+}
+
+.preview {
+  flex: 1;
+}
+.preview > main > div:hover {
+  background-color: lightsteelblue;
+  cursor: pointer;
+}
+.preview > main > div * {
+  pointer-events: none;
+}
