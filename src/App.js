@@ -21,7 +21,7 @@ export default class App extends Component {
 
     this.state = {
       htmlEls: []
-    , markdown: '# hi there\n\n how are we doing today?\n\n> foo quote\n>\n> bar\n\nswell :)'
+    , markdown: '# hi there\n\n how are we doing today?\n\n> foo quote\n>\n> bar\n\nswell\n\n- foo\n- bar'
     , selectedElType: previewBody
     , styles: {
         main: {
@@ -46,15 +46,49 @@ export default class App extends Component {
     s[selector] = { ...s[selector], ...style}
     this.setState({styles: s})
   }
+  getSelectedElType = (el, names) => {
+    const elType = el.tagName.toLowerCase()
+    return elType === "main"
+           ? names.join(" > ")
+           : this.getSelectedElType(el.parentNode, [elType].concat(names) )
+  }
+  deselectParents = (el) => {
+    el.style.background = null
+    if (el.parentNode && el.tagName.toLowerCase() !== "main") {
+      this.deselectParents(el.parentNode)
+    }
+  }
   selectEl = e => {
-    const elType = e.target.firstChild.tagName.toLowerCase()
-    this.setState({selectedElType: elType})
+    //if (e.nativeEvent.offsetY > 15) // ignore click on margin-top
+    if (e.target && e.target.tagName) {
+      this.setState({selectedElType: this.getSelectedElType(e.target, []) })
+    }
   }
   deselectEl = e => {
     if (e.target.className === "preview") {
       this.setState({selectedElType: previewBody})
     }
   }
+  interactifyEl = el => {
+    const children = React.Children.map(el.props.children, child =>
+      React.isValidElement(child) && child.props
+      ? this.interactifyEl(child)
+      : child
+    )
+    if (typeof el.type === "function") {
+      // some of commonmark-react-renderer's elements are functions that first need to be called...
+      el = el.type(el.props);
+    }
+    return React.cloneElement(el, {
+      onClick: this.selectEl
+      // onMouseEnter doesn't fire when you move the cursor from a child to its parent
+    , onMouseMove:  e => { e.target.style.background = 'lightgrey';
+                           this.deselectParents(e.target.parentNode);
+                         }
+    , onMouseLeave: e => { e.target.style.background = null}
+    }, children);
+  }
+
   render() {
     if (sheet) {
       jss.removeStyleSheet(sheet)
@@ -71,13 +105,7 @@ export default class App extends Component {
 
         <div className="preview" onClick={ this.deselectEl }>
           <main>
-            {
-            this.state.htmlEls.map( (el, i) =>
-              <div key={i} onClick={ this.selectEl }>
-                { el }
-              </div>
-            )
-            }
+            { this.state.htmlEls.map(this.interactifyEl) }
           </main>
         </div>
 

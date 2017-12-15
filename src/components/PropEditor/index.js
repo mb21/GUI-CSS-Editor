@@ -22,7 +22,7 @@ export default class PropEditor extends React.Component {
             <select
               value={ this.props.style.fontFamily || "" }
               onChange={ e => this.handleChange({fontFamily: e.target.value}) }>
-              <option value="" disabled></option>
+              <option value=""></option>
               <option value="sans-serif">Sans-serif</option>
               <option value="serif">Serif</option>
             </select>

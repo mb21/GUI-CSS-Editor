@@ -15,10 +15,12 @@ textarea {
 .preview {
   flex: 1;
 }
-.preview > main > div:hover {
-  background-color: lightsteelblue;
+.preview > main * {
   cursor: pointer;
+  margin: 15px 0 0 0;
+  padding-left: 20px;
+  border-left: 1px solid white;
 }
-.preview > main > div * {
-  pointer-events: none;
+.preview > main *:hover {
+  border-left: 1px solid lightgrey;
 }
