@@ -17,10 +17,15 @@ textarea {
 }
 .preview > main * {
   cursor: pointer;
-  margin: 15px 0 0 0;
-  padding-left: 20px;
-  border-left: 1px solid white;
 }
-.preview > main *:hover {
+.preview > main * {
+   position: relative;
+}
+.preview > main *:hover::before {
+  content: '';
   border-left: 1px solid lightgrey;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -25px;
 }
