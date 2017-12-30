@@ -7,6 +7,27 @@ import preset             from 'jss-preset-default'
 import PropEditor         from './components/PropEditor/'
 import './App.css'
 
+// START HELPERS
+
+const getUniqueId = (() => {
+  let id = 0;
+  return prefix => {
+    id++;
+    return prefix + id.toString()
+  }
+})();
+
+class Deferred {
+  constructor() {
+    this.promise = new Promise((resolve, reject) => {
+      this.reject  = reject
+      this.resolve = resolve
+    })
+  }
+}
+
+// END HELPERS
+
 const parser   = new CommonMark.Parser()
 const renderer = new ReactRenderer()
 
@@ -52,16 +73,10 @@ export default class App extends Component {
            ? names.join(" > ")
            : this.getSelectedElType(el.parentNode, [elType].concat(names) )
   }
-  deselectParents = (el) => {
+  deselectParents = el => {
     el.style.background = null
     if (el.parentNode && el.tagName.toLowerCase() !== "main") {
       this.deselectParents(el.parentNode)
-    }
-  }
-  selectEl = e => {
-    //if (e.nativeEvent.offsetY > 15) // ignore click on margin-top
-    if (e.target && e.target.tagName) {
-      this.setState({selectedElType: this.getSelectedElType(e.target, []) })
     }
   }
   deselectEl = e => {
@@ -69,24 +84,64 @@ export default class App extends Component {
       this.setState({selectedElType: previewBody})
     }
   }
-  interactifyEl = el => {
+  interactifyEl = (depth, el) => {
     const children = React.Children.map(el.props.children, child =>
       React.isValidElement(child) && child.props
-      ? this.interactifyEl(child)
+      ? this.interactifyEl(depth + 1, child)
       : child
     )
+    const newElRef = getUniqueId("newEl")
+        , asideRef = getUniqueId("aside")
+        ;
+    const elMounted = new Deferred();
     if (typeof el.type === "function") {
       // some of commonmark-react-renderer's elements are functions that first need to be called...
       el = el.type(el.props);
     }
-    return React.cloneElement(el, {
-      onClick: this.selectEl
-      // onMouseEnter doesn't fire when you move the cursor from a child to its parent
-    , onMouseMove:  e => { e.target.style.background = 'lightgrey';
-                           this.deselectParents(e.target.parentNode);
-                         }
-    , onMouseLeave: e => { e.target.style.background = null}
+    const eventHandlers = {
+      onClick: e => {
+        e.stopPropagation();
+        elMounted.promise.then(el => {
+          if (el && el.tagName) {
+            this.setState({selectedElType: this.getSelectedElType(el, []) })
+          }
+        });
+      }
+    , onMouseMove: e => {
+        // onMouseEnter doesn't fire when you move the cursor from a child to its parent
+        e.stopPropagation();
+        elMounted.promise.then(el => {
+          el.style.background = 'lightgrey';
+          this.deselectParents(el.parentNode);
+        });
+      }
+    , onMouseLeave: () => {
+        elMounted.promise.then(el => {
+          el.style.background = null
+        });
+      }
+    }
+    const newEl = React.cloneElement(el, {
+      key: newElRef
+    , ref: el => {
+        if (el) {
+          this.refs[asideRef].style.height = el.offsetHeight - 5 + "px"
+          elMounted.resolve(el)
+        }
+      }
+    , ...eventHandlers
     }, children);
+
+    return [
+      <aside
+        key={ asideRef }
+        ref={ asideRef }
+        style={ {left: 20*depth - 40 } }
+        { ...eventHandlers }
+        >
+      </aside>
+    , newEl
+    ];
   }
 
   render() {
@@ -105,7 +160,7 @@ export default class App extends Component {
 
         <div className="preview" onClick={ this.deselectEl }>
           <main>
-            { this.state.htmlEls.map(this.interactifyEl) }
+            { this.state.htmlEls.map( this.interactifyEl.bind(null, 0) ) }
           </main>
         </div>
 

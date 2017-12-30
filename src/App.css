@@ -15,17 +15,18 @@ textarea {
 .preview {
   flex: 1;
 }
+.preview > main {
+   position: relative;
+   margin-left: 30px;
+}
 .preview > main * {
   cursor: pointer;
 }
-.preview > main * {
-   position: relative;
-}
-.preview > main *:hover::before {
-  content: '';
+.preview > main aside {
   border-left: 1px solid lightgrey;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -25px;
+  width: 15px;
+}
+.preview > main aside:hover {
+  background: lightgrey;
 }
