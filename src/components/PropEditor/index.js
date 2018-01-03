@@ -3,6 +3,17 @@ import React from 'react'
 import './PropEditor.css'
 import NumericProp from './NumericProp'
 
+const elNames = {
+  p:  "Paragraph"
+, ul: "Unordered list"
+, ol: "Ordered list"
+, li: "List item"
+, h1: "Heading 1"
+, h2: "Heading 2"
+, h3: "Heading 3"
+, blockquote: "Blockquote"
+}
+
 export default class PropEditor extends React.Component {
 
   handleChange = style => {
@@ -13,7 +24,9 @@ export default class PropEditor extends React.Component {
     return (
       <div className="PropEditor">
         { this.props.selector
-          ? <h3>Styling { this.props.selector }</h3>
+          ? <h3>{
+              this.props.selector.split(" > ").map(n => elNames[n] || n).join(" ▸ ")
+            }</h3>
           : null
         }
 
@@ -64,10 +77,6 @@ export default class PropEditor extends React.Component {
             onChange={this.handleChange}
           />
         </div>
-
-        <code>
-          { JSON.stringify(this.props.style) }
-        </code>
       </div>
     )
   }

@@ -42,7 +42,7 @@ export default class App extends Component {
 
     this.state = {
       htmlEls: []
-    , markdown: '# hi there\n\n how are we doing today?\n\n> foo quote\n>\n> bar\n\nswell\n\n- foo\n- bar'
+    , markdown: '# hi there\n\nhow are we doing today?\n\n> foo quote\n>\n> bar\n\nswell\n\n- foo\n- bar'
     , selectedElType: previewBody
     , styles: {
         main: {
@@ -67,11 +67,12 @@ export default class App extends Component {
     s[selector] = { ...s[selector], ...style}
     this.setState({styles: s})
   }
-  getSelectedElType = (el, names) => {
+  getSelectedElType = (el, names) => this.getSelectedElTypeArr(el, names).join(" > ")
+  getSelectedElTypeArr = (el, names) => {
     const elType = el.tagName.toLowerCase()
     return elType === "main"
-           ? names.join(" > ")
-           : this.getSelectedElType(el.parentNode, [elType].concat(names) )
+           ? names
+           : this.getSelectedElTypeArr(el.parentNode, [elType].concat(names) )
   }
   deselectParents = el => {
     el.style.background = null

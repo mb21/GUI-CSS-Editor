@@ -1,5 +1,7 @@
 .PropEditor {
   width: 300px;
+  border-left: 1px solid grey;
+  padding-left: 10px;
 }
 
 .props > div {
