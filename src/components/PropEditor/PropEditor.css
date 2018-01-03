@@ -4,6 +4,7 @@
 
 .props > div {
   display: flex;
+  margin-top: 5px;
 }
 
 .props > div > * {

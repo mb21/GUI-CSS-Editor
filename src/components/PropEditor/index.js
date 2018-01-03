@@ -1,6 +1,7 @@
 import React from 'react'
 
 import './PropEditor.css'
+import NumericProp from './NumericProp'
 
 export default class PropEditor extends React.Component {
 
@@ -27,13 +28,41 @@ export default class PropEditor extends React.Component {
               <option value="serif">Serif</option>
             </select>
           </div>
-          <div>
-            <label>Font Size</label>
-            <input type="number"
-              value={ this.props.style.fontSize || "" }
-              onChange={ e => this.handleChange({fontSize: parseInt(e.target.value, 10)}) }
-            />
-          </div>
+
+          <NumericProp
+            label="Font size"
+            propName="fontSize"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
+
+          <NumericProp
+            label="Margin top"
+            propName="marginTop"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
+
+          <NumericProp
+            label="Margin bottom"
+            propName="marginBottom"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
+
+          <NumericProp
+            label="Margin left"
+            propName="marginLeft"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
+
+          <NumericProp
+            label="Margin right"
+            propName="marginRight"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
         </div>
 
         <code>
