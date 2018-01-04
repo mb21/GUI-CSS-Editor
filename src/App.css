@@ -27,7 +27,7 @@ textarea {
   cursor: pointer;
 }
 .preview > main aside {
-  border-left: 1px solid lightgrey;
+  border-left: 2px solid lightgrey;
   position: absolute;
   width: 15px;
 }

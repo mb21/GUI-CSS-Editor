@@ -5,34 +5,11 @@ import jss                from 'jss'
 import preset             from 'jss-preset-default'
 
 import PropEditor         from './components/PropEditor/'
+import {Deferred, getUniqueId, previewBody} from './utils'
 import './App.css'
-
-// START HELPERS
-
-const getUniqueId = (() => {
-  let id = 0;
-  return prefix => {
-    id++;
-    return prefix + id.toString()
-  }
-})();
-
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject) => {
-      this.reject  = reject
-      this.resolve = resolve
-    })
-  }
-}
-
-// END HELPERS
 
 const parser   = new CommonMark.Parser()
 const renderer = new ReactRenderer()
-
-const previewBody = "main"
-
 let sheet = null
 
 export default class App extends Component {

@@ -2,6 +2,7 @@ import React from 'react'
 
 import './PropEditor.css'
 import NumericProp from './NumericProp'
+import {previewBody} from '../../utils'
 
 const elNames = {
   p:  "Paragraph"
@@ -12,6 +13,7 @@ const elNames = {
 , h2: "Heading 2"
 , h3: "Heading 3"
 , blockquote: "Blockquote"
+, [previewBody]: "Document"
 }
 
 export default class PropEditor extends React.Component {
