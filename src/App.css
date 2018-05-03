@@ -27,9 +27,19 @@ textarea {
   cursor: pointer;
 }
 .preview > main aside {
+  color: grey;
+  font-size: 10px;
+  padding-left: 2px;
+  font-family: Helvetica, Arial, sans-serif;
   border-left: 2px solid lightgrey;
   position: absolute;
   width: 15px;
+  min-height: 15px;
+  overflow-x: hidden;
+  display: none;
+}
+.preview:hover > main aside {
+  display: block;
 }
 .preview > main aside:hover {
   background: lightgrey;

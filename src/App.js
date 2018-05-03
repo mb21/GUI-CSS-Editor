@@ -116,7 +116,9 @@ export default class App extends Component {
         ref={ asideRef }
         style={ {left: 20*depth - 40 } }
         { ...eventHandlers }
+        title={ newEl.type }
         >
+        { newEl.type }
       </aside>
     , newEl
     ];

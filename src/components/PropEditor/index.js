@@ -44,9 +44,28 @@ export default class PropEditor extends React.Component {
             </select>
           </div>
 
+          <div>
+            <label>Italic</label>
+            <select
+              value={ this.props.style.fontStyle || "" }
+              onChange={ e => this.handleChange({fontStyle: e.target.value}) }>
+              <option value=""></option>
+              <option value="italic">Italic</option>
+              <option value="normal">Normal</option>
+            </select>
+          </div>
+
           <NumericProp
             label="Font size"
             propName="fontSize"
+            style={this.props.style}
+            onChange={this.handleChange}
+          />
+
+          <NumericProp
+            float={true}
+            label="Line height"
+            propName="lineHeight"
             style={this.props.style}
             onChange={this.handleChange}
           />
