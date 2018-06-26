@@ -2,6 +2,7 @@
   "name": "css-builder",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mb21.github.io/GUI-CSS-Editor",
   "dependencies": {
     "commonmark": "^0.28.1",
     "commonmark-react-renderer": "^4.3.4",
@@ -12,12 +13,15 @@
     "react-dom": "^16.1.1"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "react-scripts": "1.0.17"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   }
 }
